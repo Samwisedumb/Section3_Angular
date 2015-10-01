@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Family History</title>
+</head>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+<body ng-app="myApp" ng-controller="todoCtrl">
+
+<h2>My Family History List</h2>
+
+<form ng-submit="addPerson()">
+    <input type="text" ng-model="personInput" size="15" placeholder="Person's Name">
+    <input type="text" ng-model="fatherInput" size="15" placeholder="Father's Name">
+    <input type="text" ng-model="motherInput" size="15" placeholder="Mother's Name">
+    <input type="submit" value="Add">
+</form>
+
+<br>
+
+<div ng-repeat="x in todoList">
+    <input type="checkbox" ng-model="x.done"><span ng-bind="x.string"></span>
+</div>
+
+<p><button ng-click="remove()">Remove marked</button></p>
+
+<script>
+var app = angular.module('myApp', []); 
+app.controller('todoCtrl', function($scope) {
+	function Person(name, father, mother) {
+		this.string = name + ", " + father + ", " + mother;
+		this.done = false;
+	}
+	$scope.todoList = [new Person("Joe Smith", "Joseph Smith", "Lucy Mack Smith")];
+
+	$scope.addPerson = function() {
+		$scope.todoList.push(new Person($scope.personInput, $scope.fatherInput, $scope.motherInput));
+   	$scope.personInput = "";
+   	$scope.fatherInput = "";
+   	$scope.motherInput = "";
+    };
+
+	$scope.remove = function() {
+		var oldList = $scope.todoList;
+		$scope.todoList = [];
+		angular.forEach(oldList, function(x) {
+			if (!x.done) $scope.todoList.push(x);
+		});
+	};
+});
+</script>
+
+</body>
+</html>
